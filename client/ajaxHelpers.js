@@ -23,13 +23,20 @@ export const fetchSinglePlayer = async (playerId) => {
     if (result.error) throw result.error;
     return result.data.player
 } catch(err) {
-    console.err("Trouble fetching single player", err)
+    console.err("Trouble fetching fetchSinglePlayer", err)
 } 
 
 };
 
 export const addNewPlayer = async (playerObj) => {
-
+  try{
+    const response = await fetch(`${APIURL}/players/${playerObj}`)
+    
+    
+    const result = await response.json();
+} catch(err) {
+    console.err("Trouble fetching addNewPlayer", err)
+} 
 };
 
 export const removePlayer = async (playerId) => {
