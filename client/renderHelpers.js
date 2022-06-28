@@ -61,12 +61,19 @@ export const renderSinglePlayer = (playerObj) => {
       <img src="${playerObj.imageUrl}" alt="photo of ${
     playerObj.name
   } the puppy">
-      <button id="see-all">Back to all players</button>
+      <button id="see-all">Back to all players </button>
     </div>
   `;
 
   playerContainer.innerHTML = pupHTML;
+
+  let seeAllButton = document.getElementById('see-all');
+  seeAllButton.addEventListener('click', async () => {
+    const players = await fetchAllPlayers()
+    renderAllPlayers(players)
+  });
 };
+
 
 export const renderNewPlayerForm = () => {
   let formHTML = `
