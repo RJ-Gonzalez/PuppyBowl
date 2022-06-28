@@ -74,7 +74,6 @@ export const renderSinglePlayer = (playerObj) => {
   });
 };
 
-
 export const renderNewPlayerForm = () => {
   let formHTML = `
     <form>
@@ -89,8 +88,6 @@ export const renderNewPlayerForm = () => {
 
   let form = document.querySelector('#new-player-form > form');
   form.addEventListener('submit', async (event) => {
-    /*
-      YOUR CODE HERE
-    */
+    event.preventDefault();
   });
 };
