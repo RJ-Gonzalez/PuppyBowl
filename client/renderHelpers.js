@@ -1,4 +1,4 @@
-import { addNewPlayer, fetchAllPlayers, fetchSinglePlayer } from './ajaxHelpers';
+import { addNewPlayer, fetchAllPlayers, fetchSinglePlayer, removePlayer } from './ajaxHelpers';
 
 const playerContainer = document.getElementById('all-players-container');
 const newPlayerFormContainer = document.getElementById('new-player-form');
@@ -22,6 +22,7 @@ export const renderAllPlayers = (playerList) => {
         </div>
         <img src="${pup.imageUrl}" alt="photo of ${pup.name} the puppy">
         <button class="detail-button" data-id=${pup.id}>See details</button>
+        <button class="delete-button" data-id=${pup.id}>Delete Player</button>
       </div>
     `;
     playerContainerHTML += pupHTML;
@@ -41,6 +42,16 @@ export const renderAllPlayers = (playerList) => {
       const player = await fetchSinglePlayer(playerId)
       renderSinglePlayer(player)
     });
+  }
+  let deleteButton = [...document.getElementsByClassName('delete-button')];
+  for (let i = 0; i < deleteButton.length; i++) {
+    const button = deleteButton[i];
+    button.addEventListener('click',async ()=> {
+      console.log ('click')
+      await removePlayer(button.dataset.id);
+      const players=await fetchAllPlayers()
+        renderAllPlayers(players)
+    } )
   }
 };
 
@@ -89,16 +100,14 @@ export const renderNewPlayerForm = () => {
   let form = document.querySelector('#new-player-form > form');
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    let nName = event.target.name.value;
-    let nBreed = event.target.breed.value;
-    let newAnimal = {
-      name: nName,
-      breed: nBreed
+    let playerData = {
+      name: form.elements.name.value,
+      breed: form.elements.breed.value
     }
-  await addNewPlayer(newAnimal);
-  const response = await fetchAllPlayers();
-  renderAllPlayers(response);
-  event.target.name.value= "";
-  event.target.breed.value = "";
+    const newP = await addNewPlayer(playerData);
+    console.log(newP)
+    const players = await fetchAllPlayers()
+     renderAllPlayers(players)
+     renderNewPlayerForm();
   });
 };
